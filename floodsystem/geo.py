@@ -9,18 +9,28 @@ geographical data.
 
 from .utils import sorted_by_key  # noqa
 
-def distance_between_points(p1,p2):
+def distance_between_coords(p1,p2):
 
-    dx = p1[0] - p2[0]
-    dy = p1[1] - p2[1]  # absolute coordinates to relative coordinates
+    k = math.pi/180  # conversion factor into radians
 
-    return math.sqrt(dx**2 + dy**2) # pythagorous 
+    lon1 = p1[1] * k
+    lon2 = p2[1] * k
+    lat1 = p1[0] * k
+    lat2 = p2[0] * k
+
+    a = math.sin(( lat2 - lat1) / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin( (lon2 - lon1) / 2)**2
+    c = 2 * math.asin( math.sqrt(a) ) # Haversine formula
+    
+    # Radius of earth in kilometers.
+    r = 6371
+      
+    return(c * r)
 
 def stations_by_distance(stations, p): # get a list of tuples of (station class, distance to p) sorted by distance to p
     
     station_distances = []
     for s in stations:
-        d = distance_between_points(s.coord, p)
+        d = distance_between_coords(s.coord, p)
         station_distances.append((s,d))
 
     distance_from_tuple = lambda x : x[1] # key used by sorted to get the distance from the tuple (station, distance)
