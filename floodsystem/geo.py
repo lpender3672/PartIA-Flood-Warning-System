@@ -51,4 +51,29 @@ def stations_within_radius(stations, centre, r):
             break
     
     return stations_in_radius
+
+
+def rivers_with_station(stations):
+
+    rivers = []
+
+    for s in stations:
+        if s.river not in rivers: # if its not already in rivers
+            rivers.append(s.river) # add to rivers
+
+    return rivers
+
+def stations_by_river(stations):
+
+    rivers = rivers_with_station(stations)
+
+    river_stations = {}
     
+    for r in rivers:
+        river_stations[r] = []
+
+    for s in stations:
+        
+        river_stations[s.river].append(s)
+
+    return river_stations

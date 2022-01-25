@@ -38,6 +38,7 @@ jobs:
           python Task1A.py
           python Task1B.py
           python Task1C.py
+          python Task1D.py
 
       - name: Run Deliverable 2 code
         run: |
