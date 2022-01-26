@@ -77,3 +77,35 @@ def stations_by_river(stations):
         river_stations[s.river].append(s)
 
     return river_stations
+
+
+def rivers_by_station_number(stations, N):
+    
+    rivers = []
+    
+    for s in stations:
+        rivers.append(s.river)
+    
+    testing = rivers_with_station(stations)
+    
+    river_with_counter = []
+    
+    for i in testing:
+        river_with_counter.append((i,rivers.count(i)))
+    
+    final = []
+    
+    for i in range(N):
+        max1 = 0 
+        
+        for j in range(len(river_with_counter)):
+            if river_with_counter[j][1] >= max1:
+                max1 = river_with_counter[j][1]
+                k = j 
+    
+        final.append((river_with_counter[k][0], max1))
+        
+        river_with_counter.remove(river_with_counter[k])
+    
+    return final
+
