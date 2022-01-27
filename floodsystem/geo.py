@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 import math
+from reprlib import recursive_repr
 """This module contains a collection of functions related to
 geographical data.
 
@@ -81,31 +82,42 @@ def stations_by_river(stations):
 
 def rivers_by_station_number(stations, N):
     
-    rivers = []
+    rivers = [] #creating list for all rivers
     
     for s in stations:
         rivers.append(s.river)
     
-    testing = rivers_with_station(stations)
+    testing = rivers_with_station(stations) #Considering only rivers with stations we create list of tuples contatining each river once and how many stations it has
     
     river_with_counter = []
     
     for i in testing:
         river_with_counter.append((i,rivers.count(i)))
     
-    final = []
+    count = 0 
     
-    for i in range(N):
-        max1 = 0 
+    final = [(0,0)]
+    
+    while count < N-1: # While the position number is under what is required we search the list finding the max and append it to second list of tuples to be returned
+            max1 = 0 
+
+            for j in range(len(river_with_counter)):
+                if river_with_counter[j][1] >= max1:
+                    max1 = river_with_counter[j][1]
+                    k = j 
+
+            if max1 < final[-1][1]:
+                count += 1 
+            
+            final.append((river_with_counter[k][0], max1))
+
+            river_with_counter.remove(river_with_counter[k])
         
-        for j in range(len(river_with_counter)):
-            if river_with_counter[j][1] >= max1:
-                max1 = river_with_counter[j][1]
-                k = j 
-    
-        final.append((river_with_counter[k][0], max1))
+    for l in range(len(river_with_counter)): # Catching any rivers with the same number of stations as the final river in the list to be returned
+        if river_with_counter[l][1] == max1:
+            final.append(river_with_counter[l])
         
-        river_with_counter.remove(river_with_counter[k])
-    
+    final.remove(final[0])
+
     return final
 
