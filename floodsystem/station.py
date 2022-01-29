@@ -31,7 +31,7 @@ class MonitoringStation:
     
     def typical_range_consistent(self):
         
-        if type(self.typical_range) != tuple or self.typical_range[0] > self.typical_range[1]:
+        if type(self.typical_range) != tuple or self.typical_range[0] > self.typical_range[1] or self.typical_range[0] == 0:
             return False
         else:
             return True
@@ -50,9 +50,10 @@ class MonitoringStation:
 def inconsistent_typical_range_stations(stations):
     inconsistent = []
     for station in stations:
-        if station.typical_range_consistent:
+        if station.typical_range_consistent():
             pass
         else:
             inconsistent.append(station)
+    return(inconsistent)
 
 
