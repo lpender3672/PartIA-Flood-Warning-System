@@ -11,6 +11,13 @@ geographical data.
 from .utils import sorted_by_key  # noqa
 
 def distance_between_coords(p1,p2):
+    """Function to get circumfurential distance in KM between two lat, long coordinates using Haversine's equation
+
+    Args:
+        p1 (list): first lat, long coordinates
+        p2 (list): second lat, long coordinates
+
+    """
 
     k = math.pi/180  # conversion factor into radians
 
@@ -28,6 +35,15 @@ def distance_between_coords(p1,p2):
     return(c * r)
 
 def stations_by_distance(stations, p): # get a list of tuples of (station class, distance to p) sorted by distance to p
+    """Function to get a list of tuples of (station class, distance to p) sorted by distance to point p
+
+    Args:
+        stations ([MonitoringStation]): List of stations
+        p ([float]): lat, long coordinates
+
+    Returns:
+        [tuple]: (station, distance to p from station)
+    """
     
     station_distances = []
     for s in stations:
@@ -41,6 +57,16 @@ def stations_by_distance(stations, p): # get a list of tuples of (station class,
 
 
 def stations_within_radius(stations, centre, r):
+    """Function to get a list of stations within radius r
+
+    Args:
+        stations ([MonitoringStation]): List of stations
+        centre ([float]): lat, long coordinates
+        r ([type]): Maximum circumfurential distance between station and centre in KM
+
+    Returns:
+        [MonitoringStation]: [description]
+    """
 
     sorted_stations = stations_by_distance(stations, centre) # gets stations with distance to centre sorted already
 
@@ -55,6 +81,14 @@ def stations_within_radius(stations, centre, r):
 
 
 def rivers_with_station(stations):
+    """Function to get list of rivers with a station
+
+    Args:
+        stations ([MonitoringStation]): List of stations
+
+    Returns:
+        [string]: list of rivers with a station
+    """
 
     rivers = []
 
@@ -65,6 +99,14 @@ def rivers_with_station(stations):
     return rivers
 
 def stations_by_river(stations):
+    """Function to get a dict that maps river names to a list of station objects on a given river. The function should have the
+
+    Args:
+        stations ([MonitoringStation]): List of stations
+
+    Returns:
+        {string : [MonitoringStation]}: dict of river names mapped to a list of stations on that river
+    """
 
     rivers = rivers_with_station(stations)
 
@@ -81,6 +123,17 @@ def stations_by_river(stations):
 
 
 def rivers_by_station_number(stations, N):
+
+    """Function to get the N rivers with the greatest number of monitoring stations. 
+
+    Args:
+        stations ([MonitoringStation]): List of stations
+        N (int): Minimum number of rivers
+
+    Returns:
+        [tuple]: list of tuples of form (river name, number of stations), sorted by the number of stations
+    """
+
     
     rivers = [] #creating list for all rivers
     
@@ -98,6 +151,7 @@ def rivers_by_station_number(stations, N):
     
     final = [(0,0)]
     
+
     while count < N-1: # While the position number is under what is required we search the list finding the max and append it to second list of tuples to be returned
             max1 = 0 
 
