@@ -64,16 +64,15 @@ def test_stations_by_river():
 
 def test_rivers_by_station_number():
     stations = build_station_list()
-    #Creatng the rivers by station number list of tuples for the n highest number of stations per river where n is a random number from 1, 10
+    #Creatng the rivers by station number list of tuples for the n highest number of stations per river where n is a random number from 1, 10 (rand_num)
     rand_num = random.radint(1,10)
     x = rivers_by_station_number(stations, rand_num)
-    #Finding the lowest value for the list
-    lowest = x[-1][1]
-    #Finding how many rivers should not end up in the list
-    counter = 0
-    for i in stations:
-        if i[1] < lowest: 
-            counter += 1
-    
-    assert len(stations) - counter == rand_num    
-    
+    #The function should return a list
+    assert type(x) == list
+    #The list should contain tuples
+    assert type(x[rand_num/2]) == tuple
+    #The rivers should be in order of most stations to least stations
+    for i in range(1,len(x)):
+        assert x[i-1][1] >= x[i][1]
+    #The list of tuples should be the same length or greater than rand_num allowing for the printing of rivers with the same number stations
+    assert len(x) >= rand_num 
