@@ -70,7 +70,7 @@ def test_rivers_by_station_number():
     #The function should return a list
     assert type(x) == list
     #The list should contain tuples
-    assert type(x[rand_num/2]) == tuple
+    assert type(x[rand_num//2]) == tuple
     #The rivers should be in order of most stations to least stations
     for i in range(1,len(x)):
         assert x[i-1][1] >= x[i][1]
