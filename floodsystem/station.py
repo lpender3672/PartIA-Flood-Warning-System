@@ -36,7 +36,7 @@ class MonitoringStation:
             bool: is the range consistent
         """
         
-        if type(self.typical_range) != tuple or self.typical_range[0] > self.typical_range[1] or self.typical_range[0] == 0:
+        if type(self.typical_range) != tuple or (self.typical_range[0] > self.typical_range[1]) or (self.typical_range[0] == 0 and self.typical_range[1] ==0):
             return False
         else:
             return True
