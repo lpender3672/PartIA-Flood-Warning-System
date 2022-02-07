@@ -30,6 +30,11 @@ class MonitoringStation:
         self.latest_level = None
     
     def typical_range_consistent(self):
+        """ Determines if the typical range is consistent
+
+        Returns:
+            bool: is the range consistent
+        """
         
         if type(self.typical_range) != tuple or self.typical_range[0] > self.typical_range[1] or self.typical_range[0] == 0:
             return False
@@ -48,11 +53,19 @@ class MonitoringStation:
         return d
 
 def inconsistent_typical_range_stations(stations):
+    """Returns a list of stations that have inconsistent data
+
+    Args:
+        stations ([type]): [description]
+
+    Returns:
+        [MonitoringStation]: list of monitoring stations with inconsistant ranges
+    """
+
+
     inconsistent = []
     for station in stations:
-        if station.typical_range_consistent():
-            pass
-        else:
+        if not station.typical_range_consistent():
             inconsistent.append(station)
     return(inconsistent)
 
