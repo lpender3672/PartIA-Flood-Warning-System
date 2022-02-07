@@ -17,8 +17,8 @@ def test_stations_by_distance(): # get a list of tuples of (station class, dista
 
     sorted_stations = stations_by_distance([closer, further], (0,0))
 
-    assert sorted_stations[0].id == closer.id
-    assert sorted_stations[1].id == further.id
+    assert sorted_stations[0][0].id == closer.id
+    assert sorted_stations[1][0].id == further.id
 
 
 def test_stations_within_radius():
