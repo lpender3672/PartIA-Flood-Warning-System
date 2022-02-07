@@ -12,13 +12,13 @@ def test_stations_by_distance(): # get a list of tuples of (station class, dista
     further_coord = (0, 2.0)
 
  
-    closer = MonitoringStation("Closer_Station", ds, ds, closer_coord, (0, 0), ds, ds)
-    further = MonitoringStation("Further_Station", ds, ds, further_coord, (0, 0), ds, ds)
+    closer = MonitoringStation(ds, ds, "Closer_Station", closer_coord, (0, 0), ds, ds)
+    further = MonitoringStation(ds, ds, "Further_Station", further_coord, (0, 0), ds, ds)
 
     sorted_stations = stations_by_distance([closer, further], (0,0))
 
-    assert sorted_stations[0][0].id == closer.id
-    assert sorted_stations[1][0].id == further.id
+    assert sorted_stations[0][0].name == closer.name
+    assert sorted_stations[1][0].name == further.name
 
 
 def test_stations_within_radius():
