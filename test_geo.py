@@ -65,7 +65,7 @@ def test_stations_by_river():
 def test_rivers_by_station_number():
     stations = build_station_list()
     #Creatng the rivers by station number list of tuples for the n highest number of stations per river where n is a random number from 1, 10 (rand_num)
-    rand_num = random.radint(1,10)
+    rand_num = random.randint(1,10)
     x = rivers_by_station_number(stations, rand_num)
     #The function should return a list
     assert type(x) == list
