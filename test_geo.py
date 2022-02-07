@@ -5,7 +5,7 @@ from socket import AI_PASSIVE
 from floodsystem.station import MonitoringStation
 
 from floodsystem.stationdata import build_station_list
-
+import random
 from floodsystem.geo import *
 
 
@@ -63,6 +63,17 @@ def test_stations_by_river():
 
 
 def test_rivers_by_station_number():
+    stations = build_station_list()
+    #Creatng the rivers by station number list of tuples for the n highest number of stations per river where n is a random number from 1, 10
+    rand_num = random.radint(1,10)
+    x = rivers_by_station_number(stations, rand_num)
+    #Finding the lowest value for the list
+    lowest = x[-1][1]
+    #Finding how many rivers should not end up in the list
+    counter = 0
+    for i in stations:
+        if i[1] < lowest: 
+            counter += 1
     
+    assert len(stations) - counter == rand_num    
     
-    pass

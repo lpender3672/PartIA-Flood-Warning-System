@@ -30,11 +30,13 @@ def test_create_monitoring_station():
 def test_inconsistent_typical_range_stations():
     #Build station list to test on
     stations = build_station_list()
+    #Produce the list of inconsistent monitoring stations
     x = inconsistent_typical_range_stations(stations)
     #The function should return a list
     assert type(x) == list
     #The length of the list of stations with inconsistent range data should be smaller than the total list of stations
     assert len(x) < len(stations)
+    #The list produced should contain only monitoring station objects
     #For the list all the typical range data should be incosistent. (type is not tuple or the lower value is greater than the upper value or both the upper and lower value are 0)
     for i in x:
         assert type(i) == MonitoringStation
