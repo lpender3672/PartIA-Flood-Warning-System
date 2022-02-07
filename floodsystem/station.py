@@ -62,6 +62,11 @@ def inconsistent_typical_range_stations(stations):
         [MonitoringStation]: list of monitoring stations with inconsistant ranges
     """
 
+    if type(stations) != list:
+        raise ArgumentError(f"stations expected to be of type list, not of the type {type(stations)}")
+    if not all([type(x) == MonitoringStation for x in stations]):
+        raise ArgumentError("stations must be a list of the MonitoringStation object")
+
 
     inconsistent = []
     for station in stations:

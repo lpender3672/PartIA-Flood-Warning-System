@@ -1,8 +1,11 @@
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
+from argparse import ArgumentError
 import math
 from reprlib import recursive_repr
+
+from floodsystem.station import MonitoringStation
 """This module contains a collection of functions related to
 geographical data.
 
@@ -18,6 +21,12 @@ def distance_between_coords(p1,p2):
         p2 (list): second lat, long coordinates
 
     """
+
+    if (type(p1) not in [tuple, list]) or len(p1) != 2:
+        raise ArgumentError(f"p1 is of type {type(p1)}. Expected tuple or list")
+    if (type(p2) not in [tuple, list]) or len(p1) != 2:
+        raise ArgumentError(f"p2 is of type {type(p2)}. Expected tuple or list")
+
 
     k = math.pi/180  # conversion factor into radians
 
@@ -44,6 +53,15 @@ def stations_by_distance(stations, p): # get a list of tuples of (station class,
     Returns:
         [tuple]: (station, distance to p from station)
     """
+
+    if type(stations) != list:
+        raise ArgumentError(f"stations expected to be of type list, not of the type {type(stations)}")
+    if not all([type(x) == MonitoringStation for x in stations]):
+        raise ArgumentError("stations must be a list of the MonitoringStation object")
+
+    if (type(p) not in [list, tuple]) or len(p) != 2:
+        raise ArgumentError(f"p expected to be of type list or tuple of length 2, not of the type {type(p)}")
+    
     
     station_distances = []
     for s in stations:
@@ -68,6 +86,17 @@ def stations_within_radius(stations, centre, r):
         [MonitoringStation]: [description]
     """
 
+    if type(stations) != list:
+        raise ArgumentError(f"stations expected to be of type list, not of the type {type(stations)}")
+    if not all([type(x) == MonitoringStation for x in stations]):
+        raise ArgumentError("stations must be a list of the MonitoringStation object")
+
+    if (type(centre) not in [list, tuple]) or len(centre) != 2:
+        raise ArgumentError(f"centre expected to be of type list or tuple of length 2, not of the type {type(centre)}")
+
+    if (type(r) not in [float, int]) or r <= 0:
+        raise ArgumentError(f"r expected to be of type float or int where r > 0")
+
     sorted_stations = stations_by_distance(stations, centre) # gets stations with distance to centre sorted already
 
     stations_in_radius = []
@@ -89,6 +118,11 @@ def rivers_with_station(stations):
     Returns:
         [string]: list of rivers with a station
     """
+    if type(stations) != list:
+        raise ArgumentError(f"stations expected to be of type list, not of the type {type(stations)}")
+    if not all([type(x) == MonitoringStation for x in stations]):
+        raise ArgumentError("stations must be a list of the MonitoringStation object")
+
 
     rivers = []
 
@@ -107,6 +141,11 @@ def stations_by_river(stations):
     Returns:
         {string : [MonitoringStation]}: dict of river names mapped to a list of stations on that river
     """
+
+    if type(stations) != list:
+        raise ArgumentError(f"stations expected to be of type list, not of the type {type(stations)}")
+    if not all([type(x) == MonitoringStation for x in stations]):
+        raise ArgumentError("stations must be a list of the MonitoringStation object")
 
     rivers = rivers_with_station(stations)
 
@@ -133,6 +172,13 @@ def rivers_by_station_number(stations, N):
     Returns:
         [tuple]: list of tuples of form (river name, number of stations), sorted by the number of stations
     """
+
+    if type(stations) != list:
+        raise ArgumentError(f"stations expected to be of type list, not of the type {type(stations)}")
+    if not all([type(x) == MonitoringStation for x in stations]):
+        raise ArgumentError("stations must be a list of the MonitoringStation object")
+    if type(N) != int or N <= 0:
+        raise ArgumentError("N should be of type int, where N > 0")
 
     
     rivers = [] #creating list for all rivers
