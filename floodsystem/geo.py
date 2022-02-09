@@ -181,43 +181,20 @@ def rivers_by_station_number(stations, N):
         raise ArgumentError("N should be of type int, where N > 0")
 
     
-    rivers = [] #creating list for all rivers
-    
-    for s in stations:
-        rivers.append(s.river)
-    
-    testing = rivers_with_station(stations) #Considering only rivers with stations we create list of tuples contatining each river once and how many stations it has
-    
-    river_with_counter = []
-    
-    for i in testing:
-        river_with_counter.append((i,rivers.count(i)))
-    
-    count = 0 
-    
-    final = [(0,0)]
-    
+    rivers_mapped_to_stations = stations_by_river(stations)
 
-    while count < N-1: # While the position number is under what is required we search the list finding the max and append it to second list of tuples to be returned
-            max1 = 0 
+    get_length_of_stations = lambda x: len(x[1])
+    rivers_sorted_by_N_stations = dict(sorted(rivers_mapped_to_stations.items(), key = get_length_of_stations, reverse=True))
 
-            for j in range(len(river_with_counter)):
-                if river_with_counter[j][1] >= max1:
-                    max1 = river_with_counter[j][1]
-                    k = j 
+    l = []
+    for name,river_stations in rivers_sorted_by_N_stations.items():
+        n_rivers = len(river_stations)
 
-            if max1 < final[-1][1]:
-                count += 1 
-            
-            final.append((river_with_counter[k][0], max1))
+        if len(l) < N or l[-1][1] == n_rivers:
+            l.append( (name, n_rivers ) )
+        else:
+            break
 
-            river_with_counter.remove(river_with_counter[k])
-        
-    for l in range(len(river_with_counter)): # Catching any rivers with the same number of stations as the final river in the list to be returned
-        if river_with_counter[l][1] == max1:
-            final.append(river_with_counter[l])
-        
-    final.remove(final[0])
-
-    return final
-
+    return l
+    
+    

@@ -7,9 +7,9 @@ def run():
     inconsistent_station_names = []
     for i in x:
         inconsistent_station_names.append(i.name)
-    print(inconsistent_station_names)
+    print(sorted(inconsistent_station_names))
 
 
 if __name__ == "__main__":
-    print("*** Task 1D: CUED Part IA Flood Warning System ***")
+    print("*** Task 1F: CUED Part IA Flood Warning System ***")
     run()

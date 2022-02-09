@@ -72,6 +72,6 @@ def inconsistent_typical_range_stations(stations):
     for station in stations:
         if not station.typical_range_consistent():
             inconsistent.append(station)
-    return(inconsistent)
+    return inconsistent
 
 
