@@ -7,6 +7,9 @@ for manipulating/modifying station data
 """
 
 
+from msilib.schema import SelfReg
+
+
 class MonitoringStation:
     """This class represents a river level monitoring station"""
 
@@ -40,8 +43,8 @@ class MonitoringStation:
             return False
         else:
             return True
-    
-    
+
+
     def __repr__(self):
         d = "Station name:     {}\n".format(self.name)
         d += "   id:            {}\n".format(self.station_id)
@@ -51,6 +54,14 @@ class MonitoringStation:
         d += "   river:         {}\n".format(self.river)
         d += "   typical range: {}".format(self.typical_range)
         return d
+    
+    def relative_water_level(self):
+        if self.typical_range_consistent() == False or self.latest_level == None:
+            return None
+        else:
+            return (self.latest_level - self.typical_range[0])/(self.typical_range[1]-self.typical_range[0])
+
+
 
 def inconsistent_typical_range_stations(stations):
     """Returns a list of stations that have inconsistent data
@@ -73,5 +84,6 @@ def inconsistent_typical_range_stations(stations):
         if not station.typical_range_consistent():
             inconsistent.append(station)
     return inconsistent
+
 
 
