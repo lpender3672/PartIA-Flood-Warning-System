@@ -7,6 +7,7 @@ for manipulating/modifying station data
 """
 
 
+from argparse import ArgumentError
 from msilib.schema import SelfReg
 
 
