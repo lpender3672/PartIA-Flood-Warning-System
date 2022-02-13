@@ -56,6 +56,13 @@ class MonitoringStation:
         return d
     
     def relative_water_level(self):
+        '''Calculates a relative water level if data is avaliable and consistent
+        Returns:
+            if data is available and consistent:
+                float: relative water level
+            if data is not available or inconsistent
+                none   
+        '''
         if self.typical_range_consistent() == False or self.latest_level == None:
             return None
         else:
