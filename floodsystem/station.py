@@ -8,8 +8,6 @@ for manipulating/modifying station data
 
 
 from argparse import ArgumentError
-from msilib.schema import SelfReg
-
 
 class MonitoringStation:
     """This class represents a river level monitoring station"""
