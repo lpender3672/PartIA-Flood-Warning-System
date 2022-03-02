@@ -138,3 +138,31 @@ def fetch_measure_levels(measure_id, dt):
         levels.append(measure['value'])
 
     return dates, levels
+
+
+
+def fetch_dates_measure_levels(measure_id, date):
+    """Fetch measure levels from latest readings between start and end dates. 
+    Return list of dates and a list of values.
+    """
+
+    # Construct URL for fetching data
+    url_base = measure_id
+    url_options = "/readings/?_sorted&date=" + date.isoformat() + 'Z'
+    url = url_base + url_options
+
+    # Fetch data
+    data = fetch(url)
+
+    # Extract dates and levels
+    dates, levels = [], []
+    for measure in data['items']:
+        # Convert date-time string to a datetime object
+        d = dateutil.parser.parse(measure['dateTime'])
+
+        # Append data
+        dates.append(d)
+        levels.append(measure['value'])
+
+    return dates, levels
+

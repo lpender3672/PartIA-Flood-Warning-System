@@ -1,7 +1,7 @@
 from floodsystem.stationdata import build_station_list, update_water_levels
 from floodsystem.flood import stations_level_over_threshold, stations_highest_rel_level
 from floodsystem.plot import plot_water_level_with_fit
-from floodsystem.datafetcher import fetch_measure_levels
+from floodsystem.datafetcher import fetch_measure_levels, fetch_measure_levels_in_time_range
 
 import datetime
 
@@ -19,7 +19,8 @@ def run():
     nstations = 0
 
     for s,r in risk_sorted_stations:
-        dates, levels = fetch_measure_levels(s.measure_id, dt=datetime.timedelta(days=dt))
+        # dates, levels = fetch_measure_levels(s.measure_id, dt=datetime.timedelta(days=dt))
+        dates, levels = fetch_measure_levels_in_time_range(s.measure_id, datetime.datetime.utcnow())
 
         if bool(dates) and nstations < 5:
             plot_water_level_with_fit(s, dates, levels, 4)
