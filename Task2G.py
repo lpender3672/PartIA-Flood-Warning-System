@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 from floodsystem.analysis import polyfit
 import datetime
+from datetime import timedelta
 
 #stations = build_station_list()
 
@@ -28,30 +29,20 @@ import datetime
 
 stations = build_station_list()
 update_water_levels(stations)
+risk_sorted_stations = stations_level_over_threshold(stations, 0)
+
+station = risk_sorted_stations[3][0]
+
+p = 3
+dates,levels = fetch_measure_levels(station.measure_id, dt=datetime.timedelta(days= 1))
+poly,d0 = polyfit(dates, levels, p)
+future_T = datetime.datetime.now() - datetime.timedelta(days=1)
+future_N = matplotlib.dates.date2num(future_T)
+
+offset = matplotlib.dates.date2num(dates[0])
+level = poly(future_N - offset)
 
 
-low = stations_level_over_threshold(stations, 1)
-moderate = []
-dt = 1
-counter = 0
-for i in low:
-    dates,levels = fetch_measure_levels(low[0][0].measure_id, dt=datetime.timedelta(days=dt))
-    try:
-        prev_lev = levels[-1]
-        current_lev = levels[0]
-        if current_lev > prev_lev:
-            moderate.append(i)
-    except:
-        pass
-    counter += 1 
-print(counter)
-
-#most_at_risk = stations_highest_rel_level(stations, 10)
-#dt = 3
-#dates,levels = fetch_measure_levels(most_at_risk[2][0].measure_id, dt=datetime.timedelta(days=dt))
-#poly, d0 = polyfit(dates, levels, 3)
-#dates_num = matplotlib.dates.date2num(dates)
-#print(type(poly))
-#print(type(d0))
-#print(poly(10))
-#over_level = 
+print(station.name)
+print((level - station.typical_range[0])/(station.typical_range[1]-station.typical_range[0]))
+print(level)

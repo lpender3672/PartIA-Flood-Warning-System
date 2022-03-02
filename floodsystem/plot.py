@@ -33,7 +33,7 @@ def plot_water_level_with_fit(station, dates, levels, p):
     
     poly, d0 = polyfit(dates, levels, p)
     dates_num = matplotlib.dates.date2num(dates)
-
+    print(type(dates_num))
 
     typical_mins = np.full(len(dates), station.typical_range[0])
     typical_maxs = np.full(len(dates), station.typical_range[1])
