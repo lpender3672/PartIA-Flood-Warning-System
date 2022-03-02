@@ -20,6 +20,7 @@ def run():
         
         dates, levels = fetch_measure_levels(s.measure_id, dt=datetime.timedelta(days=dt))
 
+        print(most_at_risk)
         plot_water_levels(s, dates, levels)
 
 
