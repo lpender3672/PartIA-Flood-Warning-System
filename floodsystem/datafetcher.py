@@ -146,9 +146,11 @@ def fetch_dates_measure_levels(measure_id, date):
     Return list of dates and a list of values.
     """
 
+    d = datetime(date.date)
+
     # Construct URL for fetching data
     url_base = measure_id
-    url_options = "/readings/?_sorted&date=" + date.isoformat() + 'Z'
+    url_options = "/readings/?_sorted&date=" + d.isoformat() + 'Z'
     url = url_base + url_options
 
     # Fetch data
