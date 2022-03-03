@@ -16,6 +16,12 @@ def plot_water_levels(station, dates, levels):
 
     plt.plot(dates, levels)
 
+
+    typical_mins = np.full(len(dates), station.typical_range[0])
+    typical_maxs = np.full(len(dates), station.typical_range[1])
+    plt.plot(dates, typical_mins, label = "Typical minimum level")
+    plt.plot(dates, typical_maxs, label = "Typical maximum level")
+
     plt.xlabel('date')
     plt.ylabel('water level (m)')
     plt.xticks(rotation=45)
@@ -23,6 +29,7 @@ def plot_water_levels(station, dates, levels):
 
     plt.tight_layout()
     
+    plt.legend()
     plt.show()
 
 
