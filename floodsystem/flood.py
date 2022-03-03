@@ -25,18 +25,41 @@ def stations_highest_rel_level(stations, N):
         
 
 def categorised_flood_risk(stations):
+    """function that asseses the flood risk for a list of stations, the stations are sorted into categories of FAUlTY, 
+    LOW, MODERATE, HIGH and SEVERE based upon the likelyhood of increases in flooding in the next few days.
+    
+    FAULTY = Sation with no level history
+
+    LOW = Station with current relative water level above 0.8 but below 1.0 that HAS NOT increased in the past 24 hours
+
+    MODERATE = Station with current relative water level above 1.0 that HAS NOT increased in the past 24 hours
+
+    HIGH = Station with current relative water level above 1.0 that HAS increased in the past 24 hours. A fitted polynomial DOES NOT predict a relative water level > 1.5 in 48 hours
+
+    SEVERE = Station with current relative water level above 1.0 that HAS increased in the past 24 hours. A fitted polynomial DOES predict a relative water level > 1.5 in 48 hours
+
+
+    Args:
+    stations (list): list of MonitoringStation objects
+    """
+    #Stations with low risk warining are intially defined as stations with relative water level above 0.8
     low = stations_level_over_threshold(stations,0.8)
+    #Stations with moderate risk warning are intially defined as stations with relative water level above 1.0
     moderate = stations_level_over_threshold(stations, 1)
     high = []
     severe = []
     faulty = []
 
     dt = 1
+    #assesing each station with a relative water level above 1
     for i in range(0, len(moderate)-1):
+        #finding the level history over the past day
         dates,levels = fetch_measure_levels(moderate[i][0].measure_id, dt=datetime.timedelta(days=dt))
+        #try, except used to deal with stations without level history
         try:
             A = levels[-1]
             B = levels[0]
+            #if the water level has increased over the past day the day the station is assesed using a polinomial fitted curve
             if B - A > 0.3:
                 if moderate[i][0].typical_range_consistent():
                     p = 3
@@ -46,21 +69,25 @@ def categorised_flood_risk(stations):
                     offset = matplotlib.dates.date2num(dates[0])
                     level = poly(future_N - offset)
                     rel_level = (level - moderate[i][0].typical_range[0])/(moderate[i][0].typical_range[1]-moderate[i][0].typical_range[0])
+                    #if the polinomial fitted curve predicts a relative water level above 1.5 in two days time staions will have a severe warning
+                    #if the polinimial fitted curve predicts a relative water level below 1.5 in two days time the station will have a high warning
                     if rel_level > 1.5:
                         severe.append(moderate[i])
                     else:
                         high.append(moderate[i])
                 else:
+                    #if the typical range is not consistent a severe warning can't be justified hence a high warning is assigned.
                     high.append(moderate[i])
 
 
         except IndexError:
             faulty.append(moderate[i])
 
-    print(len(low))
+    #This is needed to remove duplicates from the lists
     low = [x for x in low if x not in moderate]
     moderate  = [x for x in moderate if x not in faulty]
     moderate  = [x for x in moderate if x not in high]
     moderate  = [x for x in moderate if x not in severe]
     
     return(faulty, low, moderate, high, severe)
+
