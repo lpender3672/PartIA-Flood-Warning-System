@@ -3,6 +3,7 @@ from floodsystem.flood import stations_level_over_threshold
 from floodsystem.flood import categorised_flood_risk
 from floodsystem.stationdata import build_station_list,update_water_levels
 
+
 """Unit test for the flood module"""
 
 def test_for_stations_level_over_threshhold():    
@@ -33,10 +34,14 @@ def test_for_stations_level_over_threshhold():
 
 
 def test_for_categorized_flood_risk():
+    import matplotlib.dates
     stations = build_station_list()
+    
     update_water_levels(stations)
+    
     # This is how low warning stations are initally defined. Procedures are perfomed to move items from low warning list into other catagories.
     test_low = stations_level_over_threshold(stations,0.8)
-    # The sum of lengths of all the categories must add up to the intial low warning list, this shows that each station is accounted for.
+    
     faulty,low,moderate,high,severe = categorised_flood_risk(stations)
+    # The sum of lengths of all the categories must add up to the intial low warning list, this shows that each station is accounted for.
     assert len(faulty) + len(low) + len(moderate) + len(high) + len(severe) == len(test_low)
